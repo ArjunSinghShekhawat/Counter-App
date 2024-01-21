@@ -1,44 +1,38 @@
 import React, { useState } from "react";
+import data from "./data";
+import Tours from "./components/Tours";
+
 const App = () => {
-  let [counter, setCounter] = useState(0);
 
-  function plusClickHandler() {
-    setCounter((counter) => counter + 1);
-  }
-  function minusClickHandler() {
-    setCounter((counter) => counter - 1);
-  }
-  function resetHandler() {
-    setCounter(0);
+  // SET SATA IN TOUR VARIABLE
+  const [tours, setTours] = useState(data);
+  
+  // REMOVE CARD ONE BY ONE
+  function removeHandler(id) {
+    const newTour = tours.filter((tour) => tour.id !== id);
+    setTours(newTour);
   }
 
+  // REFERESH BUTTON HANDLE ALL CARD RENDER AGAIN
+  function refereshHandler() {
+    setTours(data);
+  }
+ 
+  // WHEN TOUR IS NOT PRESENT CONDITION
+  if (tours.length === 0) {
+    return (
+      <div className=" w-[100vw] h-[100vh] flex justify-center items-center flex-col gap-10 text-3xl font-bold">
+        <h1 className=" bg-purple-500 py-3 px-10 rounded text-white">Not Tour Left</h1>
+        <button onClick={refereshHandler} className="text-white py-4 px-6 rounded hover:cursor-pointe shadow-lg shadow-black md:shadow-2xl  bg-purple-800 hover:bg-purple-500">Referesh</button>
+      </div>
+    );
+  }
+  
+  //MAIN CONTENT
   return (
-    <div className=" w-[100vw] h-[100vh] bg-[#344151] flex flex-col justify-center items-center gap-10">
-      <div className=" text-3xl text-[#0398d4] font-serif">
-        Increment & Decrement
-      </div>
-      <div className=" flex gap-12 justify-center items-center bg-white text-[25px] text-[#344151]  py-3 rounded">
-        <button
-          className=" w-20  border-r-2  border-[#bfbfbf] text-5xl font-bold text-center"
-          onClick={minusClickHandler}
-        >
-          -
-        </button>
-        <div className=" font-bold text-center text-3xl">{counter}</div>
-        <button
-          className="w-20 border-l-2  border-[#bfbfbf] text-5xl font-bold text-center"
-          onClick={plusClickHandler}
-        >
-          +
-        </button>
-      </div>
-      <button
-        type="reset"
-        className=" font-bold text-2xl bg-white px-3 py-2 rounded text-[#344151]"
-        onClick={resetHandler}
-      >
-        Reset
-      </button>
+    <div >
+      {/* TOURS COMPONENT */}
+      <Tours tours={tours} removeHandler={removeHandler}></Tours>
     </div>
   );
 };
